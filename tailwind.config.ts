@@ -14,7 +14,7 @@ export default {
     },
     fontFamily: {
       sans: ['Inter', 'system-ui', 'sans-serif'],
-      display: ['Cormorant Garamond', 'serif'],
+      display: ['Playfair Display', 'serif'],
     },
     extend: {
       colors: {
