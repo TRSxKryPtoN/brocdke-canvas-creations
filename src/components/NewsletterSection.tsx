@@ -1,39 +1,53 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { Send } from "lucide-react";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <section className="py-24 px-6 border-t border-border">
-      <div className="max-w-2xl mx-auto text-center">
-        <p className="text-sm tracking-[0.4em] uppercase text-muted-foreground mb-3">
+    <section className="section-padding hero-dark relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[hsl(25,60%,42%)]/5 blur-3xl" />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 max-w-xl mx-auto text-center"
+      >
+        <span className="text-sm tracking-[0.4em] uppercase text-[hsl(25,60%,55%)] font-medium">
           Stay Connected
-        </p>
-        <h2 className="font-display text-4xl sm:text-5xl font-light text-foreground tracking-wide mb-4">
+        </span>
+        <h2 className="font-display text-4xl sm:text-5xl text-[hsl(40,30%,92%)] mt-3 mb-4">
           Join the Club
         </h2>
-        <p className="text-muted-foreground text-sm mb-8 max-w-md mx-auto">
+        <p className="text-[hsl(40,30%,60%)] text-sm mb-10">
           Be the first to know about new drops, exclusive designs, and special offers.
         </p>
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+          className="flex gap-0 max-w-md mx-auto"
         >
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email address"
-            className="flex-1 px-5 py-3 bg-card border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground/50 transition-colors"
+            className="flex-1 px-5 py-3.5 bg-[hsl(30,10%,20%)] border border-[hsl(30,10%,28%)] text-[hsl(40,30%,85%)] text-sm placeholder:text-[hsl(30,8%,40%)] focus:outline-none focus:border-[hsl(25,60%,42%)] transition-colors rounded-l-sm"
           />
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="px-8 py-3 bg-foreground text-background text-sm tracking-[0.2em] uppercase font-medium hover:bg-accent hover:text-foreground transition-all duration-500"
+            className="px-6 py-3.5 bg-primary text-primary-foreground text-sm font-medium flex items-center gap-2 rounded-r-sm hover:shadow-lg hover:shadow-primary/20 transition-shadow"
           >
-            Subscribe
-          </button>
+            <Send className="w-4 h-4" />
+          </motion.button>
         </form>
-      </div>
+      </motion.div>
     </section>
   );
 };
