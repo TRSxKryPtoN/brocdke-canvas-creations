@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import catTshirts from "@/assets/cat-tshirts.jpg";
 import catHoodies from "@/assets/cat-hoodies.jpg";
 import catJerseys from "@/assets/cat-jerseys.jpg";
@@ -5,58 +6,74 @@ import catAccessories from "@/assets/cat-accessories.jpg";
 import catSweatshirts from "@/assets/cat-sweatshirts.jpg";
 
 const categories = [
-  { name: "T-Shirts", subtitle: "Print on Demand", image: catTshirts },
-  { name: "Hoodies", subtitle: "Premium Comfort", image: catHoodies },
-  { name: "Jerseys", subtitle: "Custom Designs", image: catJerseys },
-  { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts },
-  { name: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories },
+  { name: "T-Shirts", subtitle: "Print on Demand", image: catTshirts, span: "sm:col-span-2 sm:row-span-2" },
+  { name: "Hoodies", subtitle: "Premium Comfort", image: catHoodies, span: "" },
+  { name: "Jerseys", subtitle: "Custom Designs", image: catJerseys, span: "" },
+  { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, span: "" },
+  { name: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories, span: "" },
 ];
 
 const CategoriesSection = () => {
   return (
-    <section id="collections" className="py-24 px-6">
+    <section id="collections" className="section-padding">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-sm tracking-[0.4em] uppercase text-muted-foreground mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="text-sm tracking-[0.4em] uppercase text-primary font-medium">
             Explore
-          </p>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-light text-foreground tracking-wide">
-            Collections
+          </span>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-foreground mt-3 mb-4">
+            Our Collections
           </h2>
-        </div>
+          <p className="text-muted-foreground max-w-md mx-auto">
+            From custom print tees to handcrafted accessories — find something that speaks to your style.
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((cat, i) => (
-            <a
+            <motion.a
               key={cat.name}
               href="#"
-              className={`group relative overflow-hidden ${
-                i === 0 ? "sm:col-span-2 lg:col-span-2 lg:row-span-2" : ""
-              }`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className={`group relative overflow-hidden rounded-lg ${cat.span}`}
             >
-              <div className={`relative ${i === 0 ? "aspect-square" : "aspect-[4/5]"} overflow-hidden`}>
-                <img
+              <div className={`relative ${cat.span ? "aspect-square" : "aspect-[3/4]"} overflow-hidden rounded-lg`}>
+                <motion.img
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.6 }}
                   src={cat.image}
                   alt={cat.name}
                   loading="lazy"
                   width={640}
                   height={800}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-background/40 group-hover:bg-background/20 transition-colors duration-500" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,10%)]/80 via-[hsl(30,10%,10%)]/20 to-transparent group-hover:from-[hsl(30,10%,10%)]/70 transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <span className="text-[10px] tracking-[0.3em] uppercase text-[hsl(40,30%,70%)] mb-1 block">
                     {cat.subtitle}
                   </span>
-                  <h3 className="font-display text-3xl sm:text-4xl font-light text-foreground tracking-wide">
+                  <h3 className="font-display text-2xl sm:text-3xl text-[hsl(40,30%,92%)]">
                     {cat.name}
                   </h3>
-                  <span className="mt-4 text-xs tracking-[0.3em] uppercase text-foreground/60 group-hover:text-foreground transition-colors border-b border-foreground/30 pb-1">
-                    View Collection
-                  </span>
+                  <motion.span
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "2rem" }}
+                    viewport={{ once: true }}
+                    className="block h-[2px] bg-primary mt-3 group-hover:w-12 transition-all duration-500"
+                  />
                 </div>
               </div>
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>
