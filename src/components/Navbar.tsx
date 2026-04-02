@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ShoppingBag, Search } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import logo from "@/assets/brocdke-logo.jpeg";
+import { CartDrawer } from "@/components/CartDrawer";
 
-const navLinks = ["Collections", "New Arrivals", "Custom Prints", "About"];
+const navLinks = [
+  { label: "Collections", href: "/#collections" },
+  { label: "New Arrivals", href: "/#new-arrivals" },
+  { label: "Custom Prints", href: "/#custom-prints" },
+  { label: "About", href: "/#about" },
+];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -27,7 +34,7 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <a href="/" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center gap-3 group">
           <motion.img
             whileHover={{ rotate: 5 }}
             src={logo}
@@ -39,13 +46,13 @@ const Navbar = () => {
           }`}>
             BROCDKE
           </span>
-        </a>
+        </Link>
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link, i) => (
             <motion.a
-              key={link}
-              href={`#${link.toLowerCase().replace(" ", "-")}`}
+              key={link.label}
+              href={link.href}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * i + 0.3, duration: 0.4 }}
@@ -55,12 +62,12 @@ const Navbar = () => {
                   : "text-[hsl(40,30%,80%)] hover:text-[hsl(40,30%,95%)] after:bg-[hsl(40,30%,92%)]"
               }`}
             >
-              {link}
+              {link.label}
             </motion.a>
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
@@ -68,16 +75,9 @@ const Navbar = () => {
           >
             <Search className="w-5 h-5" />
           </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className={`relative transition-colors ${scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"}`}
-          >
-            <ShoppingBag className="w-5 h-5" />
-            <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] flex items-center justify-center rounded-full font-semibold">
-              0
-            </span>
-          </motion.button>
+          <div className={`${scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"}`}>
+            <CartDrawer />
+          </div>
           <button
             className={`md:hidden transition-colors ${scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"}`}
             onClick={() => setOpen(!open)}
@@ -99,15 +99,15 @@ const Navbar = () => {
             <div className="px-6 py-6 space-y-4">
               {navLinks.map((link, i) => (
                 <motion.a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "-")}`}
+                  key={link.label}
+                  href={link.href}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.05 }}
                   className="block text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
                   onClick={() => setOpen(false)}
                 >
-                  {link}
+                  {link.label}
                 </motion.a>
               ))}
             </div>
