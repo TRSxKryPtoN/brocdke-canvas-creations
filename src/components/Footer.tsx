@@ -1,5 +1,15 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Instagram, Twitter, Facebook } from "lucide-react";
+
+const shopLinks = [
+  { label: "T-Shirts", to: "/collection/t-shirts" },
+  { label: "Hoodies", to: "/collection/hoodies" },
+  { label: "Jerseys", to: "/collection/jerseys" },
+  { label: "Caps", to: "/collection/caps" },
+  { label: "Sweatshirts", to: "/collection/sweatshirts" },
+  { label: "Accessories", to: "/collection/accessories" },
+];
 
 const Footer = () => (
   <footer className="border-t border-border py-16 px-6 bg-card">
@@ -32,9 +42,9 @@ const Footer = () => (
       <div>
         <h4 className="text-xs tracking-[0.25em] uppercase text-foreground mb-5 font-semibold">Shop</h4>
         <ul className="space-y-3 text-sm text-muted-foreground">
-          {["T-Shirts", "Hoodies", "Jerseys", "Sweatshirts", "Accessories"].map((l) => (
-            <li key={l}>
-              <a href="#" className="hover:text-primary transition-colors duration-300">{l}</a>
+          {shopLinks.map((l) => (
+            <li key={l.label}>
+              <Link to={l.to} className="hover:text-primary transition-colors duration-300">{l.label}</Link>
             </li>
           ))}
         </ul>
