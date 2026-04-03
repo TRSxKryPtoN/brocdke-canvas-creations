@@ -9,12 +9,12 @@ import catSweatshirts from "@/assets/cat-sweatshirts.jpg";
 import catCaps from "@/assets/cat-caps.jpg";
 
 const categories = [
-  { name: "T-Shirts", subtitle: "Print on Demand", image: catTshirts, slug: "t-shirts", span: "sm:col-span-2 sm:row-span-2" },
-  { name: "Hoodies", subtitle: "Premium Comfort", image: catHoodies, slug: "hoodies", span: "" },
-  { name: "Jerseys", subtitle: "Custom Designs", image: catJerseys, slug: "jerseys", span: "" },
-  { name: "Caps", subtitle: "Top It Off", image: catCaps, slug: "caps", span: "" },
-  { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, slug: "sweatshirts", span: "" },
-  { name: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories, slug: "accessories", span: "sm:col-span-2" },
+  { name: "T-Shirts", subtitle: "Print on Demand", image: catTshirts, slug: "t-shirts" },
+  { name: "Hoodies", subtitle: "Premium Comfort", image: catHoodies, slug: "hoodies" },
+  { name: "Jerseys", subtitle: "Custom Designs", image: catJerseys, slug: "jerseys" },
+  { name: "Caps", subtitle: "Top It Off", image: catCaps, slug: "caps" },
+  { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, slug: "sweatshirts" },
+  { name: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories, slug: "accessories" },
 ];
 
 const CategoriesSection = () => {
