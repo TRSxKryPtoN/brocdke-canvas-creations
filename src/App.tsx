@@ -19,6 +19,7 @@ const AppContent = () => {
       <Route path="/" element={<Index />} />
       <Route path="/collection/:slug" element={<CollectionPage />} />
       <Route path="/product/:handle" element={<ProductDetail />} />
+      <Route path="/custom-design" element={<CustomDesign />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

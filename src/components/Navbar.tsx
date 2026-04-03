@@ -4,11 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import logo from "@/assets/brocdke-logo.jpeg";
 import { CartDrawer } from "@/components/CartDrawer";
+import TopBar from "@/components/TopBar";
 
 const navLinks = [
   { label: "Collections", href: "/#collections" },
-  { label: "New Arrivals", href: "/#new-arrivals" },
-  { label: "Custom Prints", href: "/#custom-prints" },
+  { label: "Custom Design", href: "/custom-design", isRoute: true },
   { label: "About", href: "/#about" },
 ];
 
@@ -23,98 +23,116 @@ const Navbar = () => {
   }, []);
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-lg shadow-sm border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-3 group">
-          <motion.img
-            whileHover={{ rotate: 5 }}
-            src={logo}
-            alt="BROCDKE"
-            className="h-10 w-10 rounded-full object-cover shadow-md"
-          />
-          <span className={`font-display text-xl tracking-[0.25em] font-semibold transition-colors duration-500 ${
-            scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"
-          }`}>
-            BROCDKE
-          </span>
-        </Link>
+    <>
+      <TopBar />
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className={`sticky top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled
+            ? "bg-background/80 backdrop-blur-xl shadow-lg shadow-background/20 border-b border-border/50"
+            : "bg-background/60 backdrop-blur-md"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+          <Link to="/" className="flex items-center gap-3 group">
+            <motion.img
+              whileHover={{ rotate: 5 }}
+              src={logo}
+              alt="BROCDKE"
+              className="h-10 w-10 rounded-full object-cover shadow-md ring-2 ring-primary/20"
+            />
+            <span className="font-display text-xl tracking-[0.25em] font-semibold text-foreground">
+              BROCDKE
+            </span>
+          </Link>
 
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link, i) => (
-            <motion.a
-              key={link.label}
-              href={link.href}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * i + 0.3, duration: 0.4 }}
-              className={`relative text-sm tracking-widest uppercase transition-colors duration-300 after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:transition-all after:duration-300 hover:after:w-full ${
-                scrolled
-                  ? "text-muted-foreground hover:text-foreground after:bg-primary"
-                  : "text-[hsl(40,30%,80%)] hover:text-[hsl(40,30%,95%)] after:bg-[hsl(40,30%,92%)]"
-              }`}
-            >
-              {link.label}
-            </motion.a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-3">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className={`transition-colors ${scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"}`}
-          >
-            <Search className="w-5 h-5" />
-          </motion.button>
-          <div className={`${scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"}`}>
-            <CartDrawer />
-          </div>
-          <button
-            className={`md:hidden transition-colors ${scrolled ? "text-foreground" : "text-[hsl(40,30%,92%)]"}`}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-background border-t border-border overflow-hidden"
-          >
-            <div className="px-6 py-6 space-y-4">
-              {navLinks.map((link, i) => (
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link, i) => (
+              link.isRoute ? (
+                <motion.div key={link.label} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i + 0.3, duration: 0.4 }}>
+                  <Link
+                    to={link.href}
+                    className="relative text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ) : (
                 <motion.a
                   key={link.label}
                   href={link.href}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="block text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setOpen(false)}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * i + 0.3, duration: 0.4 }}
+                  className="relative text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
                 >
                   {link.label}
                 </motion.a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+              )
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-foreground"
+            >
+              <Search className="w-5 h-5" />
+            </motion.button>
+            <CartDrawer />
+            <button
+              className="md:hidden text-foreground"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden bg-background/95 backdrop-blur-xl border-t border-border overflow-hidden"
+            >
+              <div className="px-6 py-6 space-y-4">
+                {navLinks.map((link, i) => (
+                  link.isRoute ? (
+                    <motion.div key={link.label} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
+                      <Link
+                        to={link.href}
+                        className="block text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+                        onClick={() => setOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <motion.a
+                      key={link.label}
+                      href={link.href}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="block text-sm tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      {link.label}
+                    </motion.a>
+                  )
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </>
   );
 };
 
