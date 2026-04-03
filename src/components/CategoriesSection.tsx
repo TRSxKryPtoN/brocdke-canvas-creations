@@ -9,12 +9,12 @@ import catSweatshirts from "@/assets/cat-sweatshirts.jpg";
 import catCaps from "@/assets/cat-caps.jpg";
 
 const categories = [
-  { name: "T-Shirts", subtitle: "Print on Demand", image: catTshirts, slug: "t-shirts", span: "sm:col-span-2 sm:row-span-2" },
-  { name: "Hoodies", subtitle: "Premium Comfort", image: catHoodies, slug: "hoodies", span: "" },
-  { name: "Jerseys", subtitle: "Custom Designs", image: catJerseys, slug: "jerseys", span: "" },
-  { name: "Caps", subtitle: "Top It Off", image: catCaps, slug: "caps", span: "" },
-  { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, slug: "sweatshirts", span: "" },
-  { name: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories, slug: "accessories", span: "sm:col-span-2" },
+  { name: "T-Shirts", subtitle: "Print on Demand", image: catTshirts, slug: "t-shirts" },
+  { name: "Hoodies", subtitle: "Premium Comfort", image: catHoodies, slug: "hoodies" },
+  { name: "Jerseys", subtitle: "Custom Designs", image: catJerseys, slug: "jerseys" },
+  { name: "Caps", subtitle: "Top It Off", image: catCaps, slug: "caps" },
+  { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, slug: "sweatshirts" },
+  { name: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories, slug: "accessories" },
 ];
 
 const CategoriesSection = () => {
@@ -39,7 +39,7 @@ const CategoriesSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.name}
@@ -47,13 +47,12 @@ const CategoriesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className={`${cat.span}`}
             >
               <Link
                 to={`/collection/${cat.slug}`}
-                className="group relative block overflow-hidden rounded-lg"
+                className="group relative block overflow-hidden rounded-xl"
               >
-                <div className={`relative ${cat.span.includes("row-span-2") ? "aspect-square" : "aspect-[3/4]"} overflow-hidden rounded-lg`}>
+                <div className="relative aspect-[3/4] overflow-hidden rounded-xl">
                   <motion.img
                     whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.6 }}
@@ -65,11 +64,11 @@ const CategoriesSection = () => {
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,10%)]/80 via-[hsl(30,10%,10%)]/20 to-transparent group-hover:from-[hsl(30,10%,10%)]/70 transition-all duration-500" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
                     <span className="text-[10px] tracking-[0.3em] uppercase text-[hsl(40,30%,70%)] mb-1 block">
                       {cat.subtitle}
                     </span>
-                    <h3 className="font-display text-2xl sm:text-3xl text-[hsl(40,30%,92%)] mb-2">
+                    <h3 className="font-display text-xl sm:text-2xl text-[hsl(40,30%,92%)] mb-2">
                       {cat.name}
                     </h3>
                     <motion.div className="flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
