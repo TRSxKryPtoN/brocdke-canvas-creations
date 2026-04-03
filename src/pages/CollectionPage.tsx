@@ -8,6 +8,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getDummyProductsByCategory, type DummyProduct } from "@/data/dummyProducts";
 
 import catTshirts from "@/assets/cat-tshirts.jpg";
 import catHoodies from "@/assets/cat-hoodies.jpg";
@@ -28,6 +29,7 @@ const collectionMeta: Record<string, { title: string; subtitle: string; image: s
 const CollectionPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
+  const [dummyFallback, setDummyFallback] = useState<DummyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore(state => state.addItem);
   const isLoading = useCartStore(state => state.isLoading);
@@ -35,13 +37,19 @@ const CollectionPage = () => {
   const meta = slug ? collectionMeta[slug] : null;
 
   useEffect(() => {
-    if (!meta) return;
+    if (!meta || !slug) return;
     setLoading(true);
     storefrontApiRequest(STOREFRONT_PRODUCTS_QUERY, { first: 50, query: meta.query })
       .then(data => {
-        setProducts(data?.data?.products?.edges || []);
+        const shopifyProducts = data?.data?.products?.edges || [];
+        setProducts(shopifyProducts);
+        if (shopifyProducts.length === 0) {
+          setDummyFallback(getDummyProductsByCategory(slug));
+        }
       })
-      .catch(console.error)
+      .catch(() => {
+        setDummyFallback(getDummyProductsByCategory(slug));
+      })
       .finally(() => setLoading(false));
   }, [slug, meta]);
 
@@ -61,6 +69,12 @@ const CollectionPage = () => {
     toast.success(`${product.node.title} added to cart`);
   };
 
+  const handleDummyAdd = (product: DummyProduct) => {
+    toast.success(`${product.title} added to cart (demo)`);
+  };
+
+  const useDummy = products.length === 0 && dummyFallback.length > 0;
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -68,14 +82,15 @@ const CollectionPage = () => {
       {/* Hero Banner */}
       <section className="relative h-[50vh] min-h-[350px] flex items-end overflow-hidden">
         <motion.img
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.2 }}
+          initial={{ scale: 1.15, filter: "blur(4px)" }}
+          animate={{ scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.5 }}
           src={meta.image}
           alt={meta.title}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,10%)]/90 via-[hsl(30,10%,10%)]/40 to-transparent" />
+        <div className="absolute inset-0 backdrop-blur-[1px]" />
         <div className="relative z-10 px-6 pb-12 max-w-7xl mx-auto w-full">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             <Link to="/" className="inline-flex items-center gap-2 text-[hsl(40,30%,70%)] hover:text-[hsl(40,30%,90%)] text-sm mb-4 transition-colors">
@@ -83,6 +98,12 @@ const CollectionPage = () => {
             </Link>
             <span className="block text-xs tracking-[0.4em] uppercase text-primary mb-2">{meta.subtitle}</span>
             <h1 className="font-display text-5xl sm:text-6xl text-[hsl(40,30%,92%)]">{meta.title}</h1>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "4rem" }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="h-[2px] bg-primary mt-4"
+            />
           </motion.div>
         </div>
       </section>
@@ -94,17 +115,61 @@ const CollectionPage = () => {
             <div className="flex items-center justify-center py-20">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
             </div>
-          ) : products.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
+          ) : !useDummy && products.length === 0 ? (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
               <ShoppingCart className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
               <h2 className="font-display text-2xl text-foreground mb-2">No products found</h2>
               <p className="text-muted-foreground">Products for this collection haven't been added yet.</p>
             </motion.div>
+          ) : useDummy ? (
+            /* Dummy product grid */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {dummyFallback.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.06, duration: 0.4 }}
+                  whileHover={{ y: -6 }}
+                  className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+                >
+                  <div className="aspect-square overflow-hidden bg-secondary/20 relative">
+                    <motion.img
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.5 }}
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {product.sizes.length > 1 && (
+                      <div className="absolute bottom-3 left-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        {product.sizes.slice(0, 5).map(s => (
+                          <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-background/80 backdrop-blur-sm text-foreground border border-border/50">{s}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-medium text-foreground group-hover:text-primary transition-colors truncate">{product.title}</h3>
+                    <p className="text-muted-foreground text-xs mt-1 line-clamp-1">{product.description}</p>
+                    <p className="text-primary font-semibold mt-2 text-lg">
+                      ₹{product.price}
+                    </p>
+                    <Button
+                      onClick={() => handleDummyAdd(product)}
+                      className="w-full mt-4 group/btn"
+                      size="sm"
+                    >
+                      <span className="group-hover/btn:scale-105 transition-transform">Add to Cart</span>
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           ) : (
+            /* Shopify product grid */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((product, i) => {
                 const img = product.node.images.edges[0]?.node;
@@ -115,7 +180,8 @@ const CollectionPage = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05, duration: 0.4 }}
-                    className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-500"
+                    whileHover={{ y: -6 }}
+                    className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
                   >
                     <Link to={`/product/${product.node.handle}`} className="block">
                       <div className="aspect-square overflow-hidden bg-secondary/20">
@@ -137,7 +203,7 @@ const CollectionPage = () => {
                       <Link to={`/product/${product.node.handle}`}>
                         <h3 className="font-medium text-foreground group-hover:text-primary transition-colors truncate">{product.node.title}</h3>
                       </Link>
-                      <p className="text-primary font-semibold mt-1">
+                      <p className="text-primary font-semibold mt-1 text-lg">
                         {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
                       </p>
                       <Button
