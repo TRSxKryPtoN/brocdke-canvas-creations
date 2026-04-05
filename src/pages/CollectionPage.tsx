@@ -1,10 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingCart, Loader2 } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Loader2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { storefrontApiRequest, STOREFRONT_PRODUCTS_QUERY, type ShopifyProduct } from "@/lib/shopify";
-import { useCartStore } from "@/stores/cartStore";
+import { useCartStore, dummyToCartItem } from "@/stores/cartStore";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -31,6 +31,7 @@ const CollectionPage = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [dummyFallback, setDummyFallback] = useState<DummyProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
   const addItem = useCartStore(state => state.addItem);
   const isLoading = useCartStore(state => state.isLoading);
 
@@ -48,7 +49,7 @@ const CollectionPage = () => {
         }
       })
       .catch(() => {
-        setDummyFallback(getDummyProductsByCategory(slug));
+        setDummyFallback(getDummyProductsByCategory(slug!));
       })
       .finally(() => setLoading(false));
   }, [slug, meta]);
@@ -69,8 +70,12 @@ const CollectionPage = () => {
     toast.success(`${product.node.title} added to cart`);
   };
 
-  const handleDummyAdd = (product: DummyProduct) => {
-    toast.success(`${product.title} added to cart (demo)`);
+  const handleDummyAdd = async (product: DummyProduct) => {
+    const cartItem = dummyToCartItem(product);
+    await addItem(cartItem);
+    setAddedIds(prev => new Set(prev).add(product.id));
+    toast.success(`${product.title} added to cart!`);
+    setTimeout(() => setAddedIds(prev => { const n = new Set(prev); n.delete(product.id); return n; }), 2000);
   };
 
   const useDummy = products.length === 0 && dummyFallback.length > 0;
@@ -82,7 +87,7 @@ const CollectionPage = () => {
       {/* Hero Banner */}
       <section className="relative h-[50vh] min-h-[350px] flex items-end overflow-hidden">
         <motion.img
-          initial={{ scale: 1.15, filter: "blur(4px)" }}
+          initial={{ scale: 1.15, filter: "blur(6px)" }}
           animate={{ scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.5 }}
           src={meta.image}
@@ -90,7 +95,6 @@ const CollectionPage = () => {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,10%)]/90 via-[hsl(30,10%,10%)]/40 to-transparent" />
-        <div className="absolute inset-0 backdrop-blur-[1px]" />
         <div className="relative z-10 px-6 pb-12 max-w-7xl mx-auto w-full">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             <Link to="/" className="inline-flex items-center gap-2 text-[hsl(40,30%,70%)] hover:text-[hsl(40,30%,90%)] text-sm mb-4 transition-colors">
@@ -98,12 +102,7 @@ const CollectionPage = () => {
             </Link>
             <span className="block text-xs tracking-[0.4em] uppercase text-primary mb-2">{meta.subtitle}</span>
             <h1 className="font-display text-5xl sm:text-6xl text-[hsl(40,30%,92%)]">{meta.title}</h1>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "4rem" }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="h-[2px] bg-primary mt-4"
-            />
+            <motion.div initial={{ width: 0 }} animate={{ width: "4rem" }} transition={{ delay: 0.8, duration: 0.6 }} className="h-[2px] bg-primary mt-4" />
           </motion.div>
         </div>
       </section>
@@ -122,27 +121,27 @@ const CollectionPage = () => {
               <p className="text-muted-foreground">Products for this collection haven't been added yet.</p>
             </motion.div>
           ) : useDummy ? (
-            /* Dummy product grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
               {dummyFallback.map((product, i) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.06, duration: 0.4 }}
-                  whileHover={{ y: -6 }}
-                  className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: i * 0.06, duration: 0.5 }}
+                  whileHover={{ y: -8 }}
+                  className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
                 >
                   <div className="aspect-square overflow-hidden bg-secondary/20 relative">
                     <motion.img
                       whileHover={{ scale: 1.08 }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.6 }}
                       src={product.image}
                       alt={product.title}
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     {product.sizes.length > 1 && (
                       <div className="absolute bottom-3 left-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                         {product.sizes.slice(0, 5).map(s => (
@@ -151,68 +150,65 @@ const CollectionPage = () => {
                       </div>
                     )}
                   </div>
-                  <div className="p-5">
-                    <h3 className="font-medium text-foreground group-hover:text-primary transition-colors truncate">{product.title}</h3>
+                  <div className="p-4 sm:p-5">
+                    <h3 className="font-medium text-foreground group-hover:text-primary transition-colors truncate text-sm sm:text-base">{product.title}</h3>
                     <p className="text-muted-foreground text-xs mt-1 line-clamp-1">{product.description}</p>
-                    <p className="text-primary font-semibold mt-2 text-lg">
-                      ₹{product.price}
-                    </p>
+                    <div className="flex items-center justify-between mt-3">
+                      <p className="text-primary font-bold text-lg">₹{product.price}</p>
+                    </div>
                     <Button
                       onClick={() => handleDummyAdd(product)}
-                      className="w-full mt-4 group/btn"
+                      className="w-full mt-3 group/btn relative overflow-hidden"
                       size="sm"
+                      variant={addedIds.has(product.id) ? "secondary" : "default"}
                     >
-                      <span className="group-hover/btn:scale-105 transition-transform">Add to Cart</span>
+                      {addedIds.has(product.id) ? (
+                        <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center gap-1">
+                          <Check className="w-4 h-4" /> Added!
+                        </motion.span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
+                        </span>
+                      )}
                     </Button>
                   </div>
                 </motion.div>
               ))}
             </div>
           ) : (
-            /* Shopify product grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
               {products.map((product, i) => {
                 const img = product.node.images.edges[0]?.node;
                 const price = product.node.priceRange.minVariantPrice;
                 return (
                   <motion.div
                     key={product.node.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05, duration: 0.4 }}
-                    whileHover={{ y: -6 }}
-                    className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ delay: i * 0.05, duration: 0.5 }}
+                    whileHover={{ y: -8 }}
+                    className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
                   >
                     <Link to={`/product/${product.node.handle}`} className="block">
                       <div className="aspect-square overflow-hidden bg-secondary/20">
                         {img ? (
-                          <motion.img
-                            whileHover={{ scale: 1.08 }}
-                            transition={{ duration: 0.5 }}
-                            src={img.url}
-                            alt={img.altText || product.node.title}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                          />
+                          <motion.img whileHover={{ scale: 1.08 }} transition={{ duration: 0.6 }} src={img.url} alt={img.altText || product.node.title} className="w-full h-full object-cover" loading="lazy" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
                         )}
                       </div>
                     </Link>
-                    <div className="p-5">
+                    <div className="p-4 sm:p-5">
                       <Link to={`/product/${product.node.handle}`}>
                         <h3 className="font-medium text-foreground group-hover:text-primary transition-colors truncate">{product.node.title}</h3>
                       </Link>
-                      <p className="text-primary font-semibold mt-1 text-lg">
+                      <p className="text-primary font-bold mt-1 text-lg">
                         {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
                       </p>
-                      <Button
-                        onClick={() => handleAddToCart(product)}
-                        disabled={isLoading}
-                        className="w-full mt-4"
-                        size="sm"
-                      >
-                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Add to Cart"}
+                      <Button onClick={() => handleAddToCart(product)} disabled={isLoading} className="w-full mt-3" size="sm">
+                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="flex items-center gap-1"><ShoppingCart className="w-3.5 h-3.5" /> Add to Cart</span>}
                       </Button>
                     </div>
                   </motion.div>
