@@ -9,8 +9,9 @@ const features = [
 ];
 
 const FeaturesStrip = () => (
-  <section className="py-16 px-6 bg-card border-y border-border">
-    <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+  <section className="py-16 px-6 bg-card/50 backdrop-blur-sm border-y border-border/50 relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-primary/[0.02] via-transparent to-primary/[0.02]" />
+    <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
       {features.map((f, i) => (
         <motion.div
           key={f.label}
@@ -21,14 +22,13 @@ const FeaturesStrip = () => (
           className="text-center group"
         >
           <motion.div
-            whileHover={{ scale: 1.15, rotate: 5 }}
-            className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center"
+            whileHover={{ scale: 1.2, rotate: 10 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center shadow-lg shadow-primary/5 group-hover:shadow-primary/20 transition-shadow duration-500"
           >
-            <f.icon className="w-6 h-6 text-primary" />
+            <f.icon className="w-7 h-7 text-primary" />
           </motion.div>
-          <h4 className="text-sm tracking-[0.15em] uppercase text-foreground font-medium mb-1">
-            {f.label}
-          </h4>
+          <h4 className="text-sm tracking-[0.15em] uppercase text-foreground font-medium mb-1">{f.label}</h4>
           <p className="text-xs text-muted-foreground">{f.desc}</p>
         </motion.div>
       ))}

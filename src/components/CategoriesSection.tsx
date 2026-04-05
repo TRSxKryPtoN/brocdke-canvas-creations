@@ -19,8 +19,12 @@ const categories = [
 
 const CategoriesSection = () => {
   return (
-    <section id="collections" className="section-padding">
-      <div className="max-w-7xl mx-auto">
+    <section id="collections" className="section-padding relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -28,34 +32,47 @@ const CategoriesSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-sm tracking-[0.4em] uppercase text-primary font-medium">
+          <motion.span
+            initial={{ opacity: 0, letterSpacing: "0.2em" }}
+            whileInView={{ opacity: 1, letterSpacing: "0.4em" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-sm uppercase text-primary font-medium inline-block"
+          >
             Explore
-          </span>
+          </motion.span>
           <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-foreground mt-3 mb-4">
             Our Collections
           </h2>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: "3rem" }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="h-[2px] bg-primary mx-auto mb-4"
+          />
           <p className="text-muted-foreground max-w-md mx-auto">
             From custom print tees to handcrafted accessories — find something that speaks to your style.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link
                 to={`/collection/${cat.slug}`}
-                className="group relative block overflow-hidden rounded-xl"
+                className="group relative block overflow-hidden rounded-2xl"
               >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-xl">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl group-hover:shadow-primary/15 transition-shadow duration-700">
                   <motion.img
-                    whileHover={{ scale: 1.08 }}
-                    transition={{ duration: 0.6 }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
                     src={cat.image}
                     alt={cat.name}
                     loading="lazy"
@@ -63,7 +80,11 @@ const CategoriesSection = () => {
                     height={800}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,10%)]/80 via-[hsl(30,10%,10%)]/20 to-transparent group-hover:from-[hsl(30,10%,10%)]/70 transition-all duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,8%)]/85 via-[hsl(30,10%,10%)]/30 to-transparent group-hover:from-[hsl(30,10%,8%)]/75 transition-all duration-700" />
+
+                  {/* Glass overlay on hover */}
+                  <div className="absolute inset-0 bg-primary/[0.05] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                   <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
                     <span className="text-[10px] tracking-[0.3em] uppercase text-[hsl(40,30%,70%)] mb-1 block">
                       {cat.subtitle}
@@ -71,14 +92,14 @@ const CategoriesSection = () => {
                     <h3 className="font-display text-xl sm:text-2xl text-[hsl(40,30%,92%)] mb-2">
                       {cat.name}
                     </h3>
-                    <motion.div className="flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      Shop Now <ArrowRight className="w-4 h-4" />
+                    <motion.div className="flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-400">
+                      Shop Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </motion.div>
                     <motion.span
                       initial={{ width: 0 }}
                       whileInView={{ width: "2rem" }}
                       viewport={{ once: true }}
-                      className="block h-[2px] bg-primary mt-3 group-hover:w-12 transition-all duration-500"
+                      className="block h-[2px] bg-primary mt-3 group-hover:w-16 transition-all duration-500"
                     />
                   </div>
                 </div>
