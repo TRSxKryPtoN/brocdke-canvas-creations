@@ -50,6 +50,7 @@ interface CartStore {
   isLoading: boolean;
   isSyncing: boolean;
   addItem: (item: Omit<CartItem, 'lineId'>) => Promise<void>;
+  quickBuy: (item: Omit<CartItem, 'lineId'>) => Promise<void>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   clearCart: () => void;
@@ -104,6 +105,26 @@ export const useCartStore = create<CartStore>()(
           }
         } catch (error) {
           console.error('Failed to add item:', error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      quickBuy: async (item) => {
+        if (isDummyVariant(item.variantId)) {
+          const msg = encodeURIComponent(`Hi! I'd like to buy: ${item.product.node.title} (${item.selectedOptions.map(o => o.value).join(', ')})`);
+          window.open(`https://wa.me/919876543210?text=${msg}`, '_blank');
+          return;
+        }
+        set({ isLoading: true });
+        try {
+          const result = await createShopifyCart({ ...item, lineId: null });
+          if (result) {
+            set({ cartId: result.cartId, checkoutUrl: result.checkoutUrl, items: [{ ...item, lineId: result.lineId }] });
+            window.open(result.checkoutUrl, '_blank');
+          }
+        } catch (error) {
+          console.error('Quick buy failed:', error);
         } finally {
           set({ isLoading: false });
         }

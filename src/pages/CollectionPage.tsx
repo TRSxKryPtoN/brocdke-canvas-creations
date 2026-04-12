@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingCart, Loader2, Check } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Loader2, Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { storefrontApiRequest, STOREFRONT_PRODUCTS_QUERY, type ShopifyProduct } from "@/lib/shopify";
 import { useCartStore, dummyToCartItem } from "@/stores/cartStore";
@@ -33,6 +33,7 @@ const CollectionPage = () => {
   const [loading, setLoading] = useState(true);
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
   const addItem = useCartStore(state => state.addItem);
+  const quickBuy = useCartStore(state => state.quickBuy);
   const isLoading = useCartStore(state => state.isLoading);
 
   const meta = slug ? collectionMeta[slug] : null;
@@ -156,22 +157,32 @@ const CollectionPage = () => {
                     <div className="flex items-center justify-between mt-3">
                       <p className="text-primary font-bold text-lg">₹{product.price}</p>
                     </div>
-                    <Button
-                      onClick={() => handleDummyAdd(product)}
-                      className="w-full mt-3 group/btn relative overflow-hidden"
-                      size="sm"
-                      variant={addedIds.has(product.id) ? "secondary" : "default"}
-                    >
-                      {addedIds.has(product.id) ? (
-                        <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center gap-1">
-                          <Check className="w-4 h-4" /> Added!
-                        </motion.span>
-                      ) : (
-                        <span className="flex items-center gap-1">
-                          <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
-                        </span>
-                      )}
-                    </Button>
+                    <div className="flex gap-2 mt-3">
+                      <Button
+                        onClick={() => handleDummyAdd(product)}
+                        className="flex-1"
+                        size="sm"
+                        variant={addedIds.has(product.id) ? "secondary" : "default"}
+                      >
+                        {addedIds.has(product.id) ? (
+                          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center gap-1">
+                            <Check className="w-4 h-4" /> Added!
+                          </motion.span>
+                        ) : (
+                          <span className="flex items-center gap-1">
+                            <ShoppingCart className="w-3.5 h-3.5" /> Cart
+                          </span>
+                        )}
+                      </Button>
+                      <Button
+                        onClick={() => quickBuy(dummyToCartItem(product))}
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 border-primary/30 hover:bg-primary/10"
+                      >
+                        <Zap className="w-3.5 h-3.5 mr-1" /> Buy Now
+                      </Button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -207,9 +218,31 @@ const CollectionPage = () => {
                       <p className="text-primary font-bold mt-1 text-lg">
                         {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
                       </p>
-                      <Button onClick={() => handleAddToCart(product)} disabled={isLoading} className="w-full mt-3" size="sm">
-                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="flex items-center gap-1"><ShoppingCart className="w-3.5 h-3.5" /> Add to Cart</span>}
-                      </Button>
+                      <div className="flex gap-2 mt-3">
+                        <Button onClick={() => handleAddToCart(product)} disabled={isLoading} className="flex-1" size="sm">
+                          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="flex items-center gap-1"><ShoppingCart className="w-3.5 h-3.5" /> Cart</span>}
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            const variant = product.node.variants.edges[0]?.node;
+                            if (!variant) return;
+                            quickBuy({
+                              product,
+                              variantId: variant.id,
+                              variantTitle: variant.title,
+                              price: variant.price,
+                              quantity: 1,
+                              selectedOptions: variant.selectedOptions || [],
+                            });
+                          }}
+                          disabled={isLoading}
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 border-primary/30 hover:bg-primary/10"
+                        >
+                          <Zap className="w-3.5 h-3.5 mr-1" /> Buy Now
+                        </Button>
+                      </div>
                     </div>
                   </motion.div>
                 );

@@ -15,6 +15,14 @@ export const CartDrawer = () => {
   useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
 
   const handleCheckout = () => {
+    const hasDummyItems = items.some(item => item.variantId.startsWith('dummy-variant-'));
+    if (hasDummyItems) {
+      const itemList = items.map(i => `• ${i.product.node.title} x${i.quantity}`).join('\n');
+      const msg = encodeURIComponent(`Hi! I'd like to order:\n${itemList}`);
+      window.open(`https://wa.me/919876543210?text=${msg}`, '_blank');
+      setIsOpen(false);
+      return;
+    }
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       window.open(checkoutUrl, '_blank');
