@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesStrip from "@/components/FeaturesStrip";
 import CategoriesSection from "@/components/CategoriesSection";
+import CustomDesignBanner from "@/components/CustomDesignBanner";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import AboutSection from "@/components/AboutSection";
 import NewsletterSection from "@/components/NewsletterSection";
