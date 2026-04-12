@@ -14,6 +14,7 @@ const Index = () => (
     <HeroSection />
     <FeaturesStrip />
     <CategoriesSection />
+    <CustomDesignBanner />
     <TestimonialsSection />
     <AboutSection />
     <NewsletterSection />
