@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingCart, Loader2, Check } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Loader2, Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { storefrontApiRequest, STOREFRONT_PRODUCTS_QUERY, type ShopifyProduct } from "@/lib/shopify";
 import { useCartStore, dummyToCartItem } from "@/stores/cartStore";
