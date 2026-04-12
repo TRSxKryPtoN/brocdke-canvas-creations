@@ -33,6 +33,7 @@ const CollectionPage = () => {
   const [loading, setLoading] = useState(true);
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
   const addItem = useCartStore(state => state.addItem);
+  const quickBuy = useCartStore(state => state.quickBuy);
   const isLoading = useCartStore(state => state.isLoading);
 
   const meta = slug ? collectionMeta[slug] : null;
