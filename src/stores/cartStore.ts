@@ -50,6 +50,7 @@ interface CartStore {
   isLoading: boolean;
   isSyncing: boolean;
   addItem: (item: Omit<CartItem, 'lineId'>) => Promise<void>;
+  quickBuy: (item: Omit<CartItem, 'lineId'>) => Promise<void>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   clearCart: () => void;
