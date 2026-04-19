@@ -23,9 +23,12 @@ const productTypes = [
   { icon: ShoppingBag, name: "Tote Bags", desc: "Canvas & cotton bags", color: "hsl(150, 50%, 45%)" },
 ];
 
+const WHATSAPP_NUMBER = "919XXXXXXXXX"; // TODO: replace with real number
+
 const CustomDesign = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -39,6 +42,7 @@ const CustomDesign = () => {
       toast.error("File size must be under 10MB");
       return;
     }
+    setUploadedFile(file);
     setFileName(file.name);
     const reader = new FileReader();
     reader.onload = (e) => setPreview(e.target?.result as string);
@@ -52,20 +56,58 @@ const CustomDesign = () => {
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   };
 
+  // Try Web Share API first (mobile can attach the file straight into WhatsApp).
+  // Fallback: download the design + open WhatsApp with a prefilled message asking the
+  // user to attach it (one tap). WhatsApp does NOT support pre-attaching files via URL.
+  const sendToWhatsApp = async (name: string, message: string) => {
+    const productInfo = selectedProduct ? `\nProduct: ${selectedProduct}` : "";
+    const designInfo = uploadedFile ? `\nDesign file: ${uploadedFile.name}` : "";
+    const text = `Hi BROCDKE! I'm ${name}.\n\n${message}${productInfo}${designInfo}`;
+
+    // 1) Mobile: try native share sheet with file attached
+    if (uploadedFile && navigator.canShare?.({ files: [uploadedFile] })) {
+      try {
+        await navigator.share({
+          title: "BROCDKE Custom Design",
+          text,
+          files: [uploadedFile],
+        });
+        toast.success("Shared! Pick WhatsApp from the share sheet.");
+        return;
+      } catch {
+        // user cancelled or share failed — fall through to fallback
+      }
+    }
+
+    // 2) Fallback: auto-download the file, then open WhatsApp Web/App with text
+    if (uploadedFile) {
+      const url = URL.createObjectURL(uploadedFile);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = uploadedFile.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      toast.success("Design downloaded — attach it inside WhatsApp 📎", { duration: 6000 });
+    }
+
+    const whatsappMsg = encodeURIComponent(
+      `${text}${uploadedFile ? "\n\n(I'll attach the design image in this chat 📎)" : ""}`
+    );
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, "_blank");
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const name = form.get("name") as string;
-    const message = form.get("message") as string;
-    if (!name.trim() || !message.trim()) {
+    const name = (form.get("name") as string)?.trim();
+    const message = (form.get("message") as string)?.trim();
+    if (!name || !message) {
       toast.error("Please fill in all fields");
       return;
     }
-    const productInfo = selectedProduct ? ` [Product: ${selectedProduct}]` : "";
-    const whatsappMsg = encodeURIComponent(
-      `Hi BROCDKE! I'm ${name}. ${message}${productInfo}${fileName ? ` [Design: ${fileName}]` : ""}`
-    );
-    window.open(`https://wa.me/919XXXXXXXXX?text=${whatsappMsg}`, "_blank");
+    sendToWhatsApp(name, message);
   };
 
   return (
@@ -290,6 +332,7 @@ const CustomDesign = () => {
                           e.stopPropagation();
                           setPreview(null);
                           setFileName("");
+                          setUploadedFile(null);
                         }}
                         className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1"
                       >
@@ -345,6 +388,15 @@ const CustomDesign = () => {
                     <Sparkles className="w-3.5 h-3.5" />
                     Product: {selectedProduct}
                   </motion.div>
+                )}
+                {uploadedFile && (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-xs text-muted-foreground px-1"
+                  >
+                    📎 Your design will be sent with the message (auto-downloaded so you can attach it in WhatsApp).
+                  </motion.p>
                 )}
                 <Button type="submit" className="w-full group" size="lg">
                   Send via WhatsApp
