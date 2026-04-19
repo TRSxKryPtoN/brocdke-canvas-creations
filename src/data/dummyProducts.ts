@@ -52,6 +52,16 @@ export const dummyProducts: DummyProduct[] = [
   { id: "ac-3", title: "Crochet Bag", handle: "crochet-bag", description: "Handmade crochet tote bag", price: "799", currency: "INR", image: placeholder("Crochet+Bag"), category: "accessories", sizes: ["One Size"] },
   { id: "ac-4", title: "Wrist Band Set", handle: "wrist-band-set", description: "Pack of 3 branded silicone wristbands", price: "149", currency: "INR", image: placeholder("Wrist+Band"), category: "accessories", sizes: ["One Size"] },
   { id: "ac-5", title: "Crochet Phone Case", handle: "crochet-phone-case", description: "Custom crochet phone case cover", price: "349", currency: "INR", image: placeholder("Crochet+Case"), category: "accessories", sizes: ["One Size"] },
+
+  // Crochets — handmade
+  { id: "cr-1", title: "Crochet Tote Bag", handle: "crochet-tote-bag", description: "Spacious handmade crochet tote in earthy tones", price: "899", currency: "INR", image: placeholder("Crochet+Tote"), category: "crochets", sizes: ["One Size"] },
+  { id: "cr-2", title: "Crochet Bucket Hat", handle: "crochet-bucket-hat", description: "Trendy handmade crochet bucket hat", price: "549", currency: "INR", image: placeholder("Crochet+Hat"), category: "crochets", sizes: ["One Size"] },
+  { id: "cr-3", title: "Crochet Flower Bouquet", handle: "crochet-flower-bouquet", description: "Everlasting handcrafted crochet flower bouquet", price: "1199", currency: "INR", image: placeholder("Crochet+Flowers"), category: "crochets", sizes: ["One Size"] },
+  { id: "cr-4", title: "Crochet Phone Sling", handle: "crochet-phone-sling", description: "Cute crossbody phone sling in soft yarn", price: "499", currency: "INR", image: placeholder("Crochet+Sling"), category: "crochets", sizes: ["One Size"] },
+  { id: "cr-5", title: "Crochet Coaster Set", handle: "crochet-coaster-set", description: "Set of 4 boho crochet coasters", price: "299", currency: "INR", image: placeholder("Crochet+Coasters"), category: "crochets", sizes: ["Set of 4"] },
+  { id: "cr-6", title: "Crochet Keychain Charm", handle: "crochet-keychain-charm", description: "Adorable mini crochet animal keychain", price: "199", currency: "INR", image: placeholder("Crochet+Charm"), category: "crochets", sizes: ["One Size"] },
+  { id: "cr-7", title: "Crochet Headband", handle: "crochet-headband", description: "Soft crochet headband with bow detail", price: "349", currency: "INR", image: placeholder("Crochet+Band"), category: "crochets", sizes: ["One Size"] },
+  { id: "cr-8", title: "Crochet Plushie", handle: "crochet-plushie", description: "Handmade amigurumi crochet plushie", price: "799", currency: "INR", image: placeholder("Crochet+Plush"), category: "crochets", sizes: ["One Size"] },
 ];
 
 export function getDummyProductsByCategory(slug: string): DummyProduct[] {
