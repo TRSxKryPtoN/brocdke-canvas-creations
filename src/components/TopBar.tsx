@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Truck, RefreshCw, Headphones, Sparkles } from "lucide-react";
+import { Truck, Headphones, Sparkles } from "lucide-react";
 
 const links = [
   { icon: Truck, label: "Free Shipping over ₹999" },
-  { icon: RefreshCw, label: "Easy Returns" },
   { icon: Headphones, label: "24/7 Support" },
   { icon: Sparkles, label: "New Arrivals Weekly" },
 ];
