@@ -7,6 +7,7 @@ import catJerseys from "@/assets/cat-jerseys.jpg";
 import catAccessories from "@/assets/cat-accessories.jpg";
 import catSweatshirts from "@/assets/cat-sweatshirts.jpg";
 import catCaps from "@/assets/cat-caps.jpg";
+import catCrochets from "@/assets/cat-crochets.jpg";
 
 type Category = {
   name: string;
@@ -24,7 +25,7 @@ const categories: Category[] = [
   { name: "Print on Demand", subtitle: "Design Your Own", image: catTshirts, slug: "print-on-demand", to: "/custom-design", highlight: true },
   { name: "Caps", subtitle: "Top It Off", image: catCaps, slug: "caps", to: "/collection/caps" },
   { name: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, slug: "sweatshirts", to: "/collection/sweatshirts" },
-  { name: "Crochets", subtitle: "Handmade with Love", image: catAccessories, slug: "crochets", to: "/collection/crochets" },
+  { name: "Crochets", subtitle: "Handmade with Love", image: catCrochets, slug: "crochets", to: "/collection/crochets" },
   { name: "Accessories", subtitle: "Frames · Keys · More", image: catAccessories, slug: "accessories", to: "/collection/accessories" },
 ];
 

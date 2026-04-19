@@ -84,9 +84,20 @@ const ProductDetail = () => {
       <Navbar />
       <section className="pt-28 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-8"
+          >
+            <Link
+              to="/"
+              className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-border bg-card/50 backdrop-blur-md text-foreground hover:border-primary/60 hover:bg-primary/10 hover:text-primary hover:shadow-lg hover:shadow-primary/15 hover:-translate-x-1 transition-all duration-300"
+            >
+              <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+              <span className="text-sm font-medium tracking-wide">Back</span>
+            </Link>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12">
             {/* Images */}
