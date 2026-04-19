@@ -24,6 +24,7 @@ const collectionMeta: Record<string, { title: string; subtitle: string; image: s
   "sweatshirts": { title: "Sweatshirts", subtitle: "Everyday Luxury", image: catSweatshirts, query: "product_type:Sweatshirt OR title:*sweatshirt*" },
   "accessories": { title: "Accessories", subtitle: "Frames · Keys · Crochet", image: catAccessories, query: "product_type:Accessory OR title:*keychain* OR title:*frame* OR title:*crochet*" },
   "caps": { title: "Caps", subtitle: "Top It Off", image: catCaps, query: "product_type:Cap OR title:*cap* OR title:*hat*" },
+  "crochets": { title: "Crochets", subtitle: "Handmade with Love", image: catAccessories, query: "product_type:Crochet OR title:*crochet*" },
 };
 
 const CollectionPage = () => {
