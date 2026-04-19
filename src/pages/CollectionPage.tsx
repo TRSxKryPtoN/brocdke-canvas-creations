@@ -99,9 +99,20 @@ const CollectionPage = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-[hsl(30,10%,10%)]/90 via-[hsl(30,10%,10%)]/40 to-transparent" />
         <div className="relative z-10 px-6 pb-12 max-w-7xl mx-auto w-full">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-            <Link to="/" className="inline-flex items-center gap-2 text-[hsl(40,30%,70%)] hover:text-[hsl(40,30%,90%)] text-sm mb-4 transition-colors">
-              <ArrowLeft className="w-4 h-4" /> Back to Home
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-6"
+            >
+              <Link
+                to="/"
+                className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[hsl(40,30%,70%)]/25 bg-background/30 backdrop-blur-md text-[hsl(40,30%,85%)] hover:text-[hsl(40,30%,98%)] hover:border-primary/60 hover:bg-primary/15 hover:shadow-lg hover:shadow-primary/20 hover:-translate-x-1 transition-all duration-300"
+              >
+                <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+                <span className="text-sm font-medium tracking-wide">Back to Home</span>
+              </Link>
+            </motion.div>
             <span className="block text-xs tracking-[0.4em] uppercase text-primary mb-2">{meta.subtitle}</span>
             <h1 className="font-display text-5xl sm:text-6xl text-[hsl(40,30%,92%)]">{meta.title}</h1>
             <motion.div initial={{ width: 0 }} animate={{ width: "4rem" }} transition={{ delay: 0.8, duration: 0.6 }} className="h-[2px] bg-primary mt-4" />
