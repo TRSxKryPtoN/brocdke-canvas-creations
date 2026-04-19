@@ -420,7 +420,7 @@ const CustomDesign = () => {
                 </a>
 
                 <a
-                  href="https://instagram.com/brocdke"
+                  href="https://www.instagram.com/brocdke.clothing/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#E1306C]/10 hover:bg-[#E1306C]/20 border border-[#E1306C]/20 transition-all group flex-1"
