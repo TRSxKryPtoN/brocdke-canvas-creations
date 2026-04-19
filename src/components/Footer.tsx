@@ -27,10 +27,17 @@ const Footer = () => (
           Custom print-on-demand clothing, handcrafted accessories, and unique designs that tell your story.
         </p>
         <div className="flex gap-3 mt-6">
-          {[Instagram, Twitter, Facebook].map((Icon, i) => (
+          {[
+            { Icon: Instagram, href: "https://www.instagram.com/brocdke.clothing/", label: "Instagram" },
+            { Icon: Twitter, href: "#", label: "Twitter" },
+            { Icon: Facebook, href: "#", label: "Facebook" },
+          ].map(({ Icon, href, label }, i) => (
             <motion.a
               key={i}
-              href="#"
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
               whileHover={{ scale: 1.15, y: -2 }}
               className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
             >
