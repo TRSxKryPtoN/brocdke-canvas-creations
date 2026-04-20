@@ -25,17 +25,30 @@ const AboutSection = () => {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div className="aspect-square bg-secondary rounded-2xl flex items-center justify-center p-16 relative overflow-hidden shadow-2xl shadow-primary/5">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
-            <motion.img
+          <div className="aspect-square [perspective:1200px] group">
+            <motion.div
               style={{ y: imgY }}
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              transition={{ duration: 0.5 }}
-              src={logo}
-              alt="BROCDKE Logo"
-              className="w-full h-full object-contain relative z-10"
-              loading="lazy"
-            />
+              className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"
+            >
+              {/* Front */}
+              <div className="absolute inset-0 bg-secondary rounded-2xl flex items-center justify-center p-16 overflow-hidden shadow-2xl shadow-primary/5 [backface-visibility:hidden]">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
+                <img
+                  src={logo}
+                  alt="BROCDKE Logo"
+                  className="w-full h-full object-contain relative z-10"
+                  loading="lazy"
+                />
+              </div>
+              {/* Back */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-secondary to-primary/5 rounded-2xl flex flex-col items-center justify-center p-10 text-center overflow-hidden shadow-2xl shadow-primary/10 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                <span className="text-xs tracking-[0.4em] uppercase text-primary font-medium mb-4">Est. 2024</span>
+                <h3 className="font-display text-3xl text-foreground mb-3">Wear Your Story</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+                  Crafted with intention. Designed for those who refuse to blend in.
+                </p>
+              </div>
+            </motion.div>
           </div>
           {/* Decorative ring */}
           <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full border-2 border-primary/10" />

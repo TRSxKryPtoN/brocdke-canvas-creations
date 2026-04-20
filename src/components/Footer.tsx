@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Instagram, Twitter, Facebook } from "lucide-react";
+import { Instagram, MessageCircle } from "lucide-react";
 
 const shopLinks = [
   { label: "T-Shirts", to: "/collection/t-shirts" },
@@ -29,8 +29,7 @@ const Footer = () => (
         <div className="flex gap-3 mt-6">
           {[
             { Icon: Instagram, href: "https://www.instagram.com/brocdke.clothing/", label: "Instagram" },
-            { Icon: Twitter, href: "#", label: "Twitter" },
-            { Icon: Facebook, href: "#", label: "Facebook" },
+            { Icon: MessageCircle, href: "https://whatsapp.com/channel/brocdke", label: "WhatsApp" },
           ].map(({ Icon, href, label }, i) => (
             <motion.a
               key={i}
