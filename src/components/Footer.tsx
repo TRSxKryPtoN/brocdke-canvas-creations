@@ -58,9 +58,15 @@ const Footer = () => (
       <div>
         <h4 className="text-xs tracking-[0.25em] uppercase text-foreground mb-5 font-semibold">Info</h4>
         <ul className="space-y-3 text-sm text-muted-foreground">
-          {["About Us", "Contact", "Shipping", "Returns", "FAQs"].map((l) => (
-            <li key={l}>
-              <a href="#" className="hover:text-primary transition-colors duration-300">{l}</a>
+          {[
+            { label: "About Us", to: "/info/about-us" },
+            { label: "Contact", to: "/info/contact" },
+            { label: "Shipping", to: "/info/shipping" },
+            { label: "Returns", to: "/info/returns" },
+            { label: "FAQs", to: "/info/faqs" },
+          ].map((l) => (
+            <li key={l.label}>
+              <Link to={l.to} className="hover:text-primary transition-colors duration-300">{l.label}</Link>
             </li>
           ))}
         </ul>
@@ -71,8 +77,8 @@ const Footer = () => (
         © 2026 BROCDKE. All rights reserved.
       </span>
       <div className="flex gap-6 text-xs text-muted-foreground">
-        <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-        <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+        <Link to="/info/privacy-policy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+        <Link to="/info/terms-of-service" className="hover:text-foreground transition-colors">Terms of Service</Link>
       </div>
     </div>
   </footer>
