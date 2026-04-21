@@ -168,7 +168,11 @@ const CustomDesign = () => {
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <a href="https://wa.me/919XXXXXXXXX" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="text-base px-8 border-primary/30 hover:bg-primary/10">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-base px-8 bg-transparent border-primary/40 text-[hsl(var(--hero-fg))] hover:bg-primary/15 hover:text-[hsl(var(--hero-fg))] hover:border-primary/60"
+                >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Chat With Us
                 </Button>
