@@ -8,6 +8,7 @@ import Index from "./pages/Index.tsx";
 import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import CustomDesign from "./pages/CustomDesign.tsx";
+import InfoPage from "./pages/InfoPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const AppContent = () => {
       <Route path="/collection/:slug" element={<CollectionPage />} />
       <Route path="/product/:handle" element={<ProductDetail />} />
       <Route path="/custom-design" element={<CustomDesign />} />
+      <Route path="/info/:slug" element={<InfoPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
