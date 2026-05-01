@@ -10,12 +10,17 @@ import ProductDetail from "./pages/ProductDetail.tsx";
 import CustomDesign from "./pages/CustomDesign.tsx";
 import InfoPage from "./pages/InfoPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import FloatingContact from "./components/FloatingContact";
+import ScrollProgress from "./components/ScrollProgress";
+import EasterEggs from "./components/EasterEggs";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   useCartSync();
   return (
+    <>
+    <ScrollProgress />
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/collection/:slug" element={<CollectionPage />} />
@@ -24,6 +29,9 @@ const AppContent = () => {
       <Route path="/info/:slug" element={<InfoPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    <FloatingContact />
+    <EasterEggs />
+    </>
   );
 };
 
