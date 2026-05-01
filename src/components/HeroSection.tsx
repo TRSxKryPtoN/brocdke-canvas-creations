@@ -70,9 +70,19 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] font-medium tracking-[0.1em] text-[hsl(40,30%,92%)] mb-4 leading-none"
+          className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] font-medium tracking-[0.1em] text-[hsl(40,30%,92%)] mb-4 leading-none flex justify-center"
+          aria-label="BROCDKE"
         >
-          BROCDKE
+          {"BROCDKE".split("").map((ch, i) => (
+            <motion.span
+              key={i}
+              whileHover={{ y: -14, color: "hsl(25, 70%, 60%)", scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 12 }}
+              className="inline-block cursor-default"
+            >
+              {ch}
+            </motion.span>
+          ))}
         </motion.h1>
 
         <motion.div
