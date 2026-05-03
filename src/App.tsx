@@ -32,6 +32,7 @@ const AppContent = () => {
     </Routes>
     <FloatingContact />
     <EasterEggs />
+    <CustomCursor />
     </>
   );
 };
