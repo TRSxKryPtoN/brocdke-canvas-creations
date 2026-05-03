@@ -14,6 +14,9 @@ const SECRET_WORDS: Record<string, { code: string; msg: string }> = {
   love:    { code: "LOVE10",  msg: "Love received — sending some back 💌" },
   craft:   { code: "CRAFT12", msg: "A maker recognises a maker 🧵" },
   vibe:    { code: "VIBE08",  msg: "Vibe unlocked 🎧" },
+  copper:  { code: "COPPER7", msg: "Copper soul detected 🔶" },
+  story:   { code: "TALE11",  msg: "Every thread tells a story 📖" },
+  india:   { code: "DESI20",  msg: "Made with love in India 🇮🇳" },
 };
 
 const EasterEggs = () => {

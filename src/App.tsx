@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound.tsx";
 import FloatingContact from "./components/FloatingContact";
 import ScrollProgress from "./components/ScrollProgress";
 import EasterEggs from "./components/EasterEggs";
+import CustomCursor from "./components/CustomCursor";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const AppContent = () => {
     </Routes>
     <FloatingContact />
     <EasterEggs />
+    <CustomCursor />
     </>
   );
 };
