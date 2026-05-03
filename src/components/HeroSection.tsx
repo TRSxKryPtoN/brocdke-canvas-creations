@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import heroImage from "@/assets/hero-fashion.jpg";
+import HeroCursorGlow from "./HeroCursorGlow";
 
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null);
@@ -12,6 +13,7 @@ const HeroSection = () => {
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden hero-dark">
+      <HeroCursorGlow targetRef={ref} />
       <motion.div className="absolute inset-0" style={{ y, scale }}>
         <motion.img
           initial={{ scale: 1.15, filter: "blur(10px)" }}
