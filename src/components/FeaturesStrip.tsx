@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { Truck, Palette, Shield, Sparkles } from "lucide-react";
 
 const features = [
-  { icon: Palette, label: "Custom Designs", desc: "Unique art, your way" },
-  { icon: Truck, label: "Fast Delivery", desc: "Right to your doorstep" },
-  { icon: Shield, label: "Premium Quality", desc: "Built to last" },
-  { icon: Sparkles, label: "Handcrafted", desc: "Made with passion" },
+  { icon: Palette, label: "Custom Designs", desc: "Unique art, your way", cls: "feat-palette" },
+  { icon: Truck, label: "Fast Delivery", desc: "Right to your doorstep", cls: "feat-van" },
+  { icon: Shield, label: "Premium Quality", desc: "Built to last", cls: "feat-shield" },
+  { icon: Sparkles, label: "Handcrafted", desc: "Made with passion", cls: "feat-sparkle" },
 ];
 
 const FeaturesStrip = () => (
@@ -19,15 +19,11 @@ const FeaturesStrip = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.1, duration: 0.5 }}
-          className="text-center group"
+          className={`text-center group ${f.cls}`}
         >
-          <motion.div
-            whileHover={{ scale: 1.2, rotate: 10 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center shadow-lg shadow-primary/5 group-hover:shadow-primary/20 transition-shadow duration-500"
-          >
-            <f.icon className="w-7 h-7 text-primary" />
-          </motion.div>
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center shadow-lg shadow-primary/5 group-hover:shadow-primary/20 transition-shadow duration-500">
+            <f.icon className="feat-icon w-7 h-7 text-primary" />
+          </div>
           <h4 className="text-sm tracking-[0.15em] uppercase text-foreground font-medium mb-1">{f.label}</h4>
           <p className="text-xs text-muted-foreground">{f.desc}</p>
         </motion.div>

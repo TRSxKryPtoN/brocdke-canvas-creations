@@ -25,7 +25,7 @@ const AboutSection = () => {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div className="aspect-square [perspective:1200px] group">
+          <div className="aspect-square max-w-sm mx-auto [perspective:1200px] group">
             <motion.div
               style={{ y: imgY }}
               className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"
