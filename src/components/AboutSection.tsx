@@ -31,12 +31,12 @@ const AboutSection = () => {
               className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"
             >
               {/* Front */}
-              <div className="absolute inset-0 bg-secondary rounded-2xl flex items-center justify-center p-16 overflow-hidden shadow-2xl shadow-primary/5 [backface-visibility:hidden]">
+              <div className="absolute inset-0 bg-secondary rounded-2xl flex items-center justify-center p-16 sm:p-20 overflow-hidden shadow-2xl shadow-primary/5 [backface-visibility:hidden]">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
                 <img
                   src={logo}
                   alt="BROCDKE Logo"
-                  className="w-full h-full object-contain relative z-10"
+                  className="w-3/5 h-3/5 object-contain relative z-10"
                   loading="lazy"
                 />
               </div>
